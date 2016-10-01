@@ -5,21 +5,48 @@ var dragonColors = {
 };
 
 $( document ).ready(function() {
-	displayDragonColors();
-  // bindListeners();
+	fillFormOptions();
+	bindListeners();
 });
 
-// var bindListeners = function(){};
+var bindListeners = function(){
+	$('form').submit(displayResults);
+};
 
-var displayDragonColors = function(){
-	var options = makeColorOptions();
+var displayResults = function(event){
+	event.preventDefault();
+	var rawData = $(this).serialize();
+	var rawData = rawData.split("&");
+	var dataholder = {};
+	rawData.forEach(function(value){
+		var thisvar = value.split("=");
+		dataholder[thisvar[0]] = thisvar[1];
+	})
+	var results = ["<h2> Your Input </h2> <p> Dream Dragon: ",
+		dataholder.dd1,
+		" / ",
+		dataholder.dd2,
+		" / ",
+		dataholder.dd3,
+		"</p> <p> Parent 1: ",
+		dataholder.p1,
+		" / ",
+		dataholder.p2,
+		" / ",
+		dataholder.p3,
+		"</p>"].join("")
+	$("#results").html(results)
+};
+
+var fillFormOptions = function(){
+	var options = OptionsHtml(dragonColors.raw);
 	$("select.colors").html(options);
 };
 
-var makeColorOptions = function(array){
+var OptionsHtml = function(array){
 	var colorOptions = "";
-	dragonColors.raw.forEach(function(currentValue){
-		colorOptions += "<option value="+ currentValue +"> " + currentValue + "</option>";
+	array.forEach(function(value){
+		colorOptions += "<option value="+ value +"> " + value + "</option>";
 	});
 	return colorOptions;
 };
@@ -27,8 +54,11 @@ var makeColorOptions = function(array){
 
 
 
+// ========================================
+// ========================================
+// ========================================
 
 // quick way to spot test JQuery functions
 var testingTesting = function(){
-	$("body").css("background-color","blue");
+	$("body").css("background-color","orange");
 }
